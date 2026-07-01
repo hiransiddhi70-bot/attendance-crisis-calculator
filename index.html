@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunk Buddy - Attendance Crisis Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #e6f3ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #2d2d2d;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        .emoji { font-size: 32px; margin-bottom: 12px; }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff69b4;
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 16px;
+            background: linear-gradient(135deg, #ff69b4, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+        }
+        
+        #result {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.5;
+            display: none;
+        }
+        
+        .safe { background: #e8f5e9; color: #2e7d32; border: 2px solid #81c784; }
+        .danger { background: #ffebee; color: #c62828; border: 2px solid #ef5350; }
+        .warning { background: #fff3e0; color: #ef6c00; border: 2px solid #ffb74d; }
+        
+        .footer {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .footer a {
+            color: #ff69b4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">📊💀</div>
+        <h1>Bunk Buddy</h1>
+        <p class="subtitle">75% crisis se bachao yaar 😅</p>
+        
+        <input type="number" id="total" placeholder="Total classes hui ab tak">
+        <input type="number" id="attended" placeholder="Kitni attend ki tune">
+        
+        <button onclick="calc()">Check My Fate 🔮</button>
+        
+        <div id="result"></div>
+        
+        <p class="footer">
+            Made with 💖 by <a href="https://instagram.com/studyspark.studio" target="_blank">StudySpark Studio</a>
+        </p>
+    </div>
+
+    <script>
+        function calc() {
+            let t = parseFloat(document.getElementById('total').value);
+            let a = parseFloat(document.getElementById('attended').value);
+            let resultDiv = document.getElementById('result');
+            
+            if (!t || !a || t < a || t <= 0 || a < 0) {
+                resultDiv.className = 'warning';
+                resultDiv.innerHTML = 'Bhai sahi numbers daal 😑<br>Total classes ≥ Attended honi chahiye';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            
+            let percent = (a / t * 100).toFixed(1);
+            let needed = Math.ceil(0.75 * t - a);
+            let canBunk = Math.floor(a / 0.75 - t);
+            
+            resultDiv.style.display = 'block';
+            
+            if (percent >= 75) {
+                resultDiv.className = 'safe';
+                if (canBunk > 0) {
+                    resultDiv.innerHTML = `✅ Safe Ho: ${percent}%<br>Abhi ${canBunk} bunk aur maar sakte ho 😎<br><small>But zyada udd mat...</small>`;
+                } else {
+                    resultDiv.innerHTML = `✅ Safe Ho: ${percent}%<br>Bunk limit khatam! Ab class jaao 📚`;
+                }
+            } else {
+                resultDiv.className = 'danger';
+                resultDiv.innerHTML = `🚨 Khatra: ${percent}%<br>Abhi ${needed} class attend karo warna detention 💀<br><small>Parents Call Incoming...</small>`;
+            }
+        }
+        
+        // Enter key se bhi kaam kare
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calc();
+        });
+    </script>
+</body>
+</html>
